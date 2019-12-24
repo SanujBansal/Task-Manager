@@ -1,32 +1,32 @@
-
-
-<div class="d-flex justify-content-center h-100">
-    <div class="d-flex bg-light h-50 w-50 align-self-center main-container rounded">
-        <div class="p-3 col-4 d-flex flex-column">
-            <h2 class="heading">
-            Lists
-            </h2>
-            <div class="pt-2 list-group">
-                <div class="list-group-item active">
-                Item1
-                </div>
-                <div class="list-group-item">
-                Item1
-                </div>
-                <div class="list-group-item">
-                Item1
-                </div>
-            </div>
-            <button class="btn btn-primary mt-auto">+ New List</button>
+<div class="centered-content">
+  <div class="d-flex bg-light h-50 w-50 rounded">
+    <div class="p-3 col-4 d-flex flex-column">
+      <h2 class="heading">
+        Lists
+      </h2>
+      <div class="pt-2 list-group">
+        <div class="list-group-item active">
+          Item1
         </div>
-
-        <div class="p-3 col-8 tasks">
-        <h2 class="heading mb-3">
-        Tasks
-        </h2>
-          <div class="bg-white p-1 pl-3 rounded">
-            Hello this is your first task
-          </div>
+        <div class="list-group-item">
+          Item1
         </div>
+        <div class="list-group-item">
+          Item1
+        </div>
+      </div>
+      <button class="btn btn-primary mt-auto" [routerLink]="['../new-list']">
+        + New List
+      </button>
     </div>
+
+    <div class="p-3 col-8 tasks">
+      <h2 class="heading mb-3">
+        Tasks
+      </h2>
+      <div class="bg-white p-1 pl-3 rounded">
+        Hello this is your first task
+      </div>
+    </div>
+  </div>
 </div>

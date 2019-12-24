@@ -1,12 +1,13 @@
 const express = require("express");
-const app = express();
 const mongoose = require("./db/mongoose");
 const bodyParser = require("body-parser");
 const { list, task } = require("./db/models");
 
+
+const app = express();
 app.use(bodyParser.json());
+
 app.get("/lists", (req, res) => {
-  //todo return all the lists in the database
   list.find({}).then(lists => {
     res.send(lists);
   });

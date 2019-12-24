@@ -1,9 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
 body {
-    background: linear-gradient(to right top, lightblue, blue);
-    
+  background: linear-gradient(to right top, lightblue, blue);
 }
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
+}
+.centered-content {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+.heading {
+  color: navy;
+}
+.background {
+  background: #f2f2f2;
 }
