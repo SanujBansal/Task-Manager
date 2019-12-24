@@ -5,28 +5,32 @@
         Lists
       </h2>
       <div class="pt-2 list-group">
-        <div class="list-group-item active">
-          Item1
-        </div>
-        <div class="list-group-item">
-          Item1
-        </div>
-        <div class="list-group-item">
-          Item1
+        <div
+          class="list-group-item"
+          *ngFor="let item of lists"
+          routerLinkActive="active"
+          (click)="getTasks(item._id)"
+          [routerLink]="['/lists', item._id]"
+        >
+          {{ item.title }}
         </div>
       </div>
-      <button class="btn btn-primary mt-auto" [routerLink]="['../new-list']">
+      <button class="btn btn-primary mt-auto" [routerLink]="['/', 'new-list']">
         + New List
       </button>
     </div>
 
-    <div class="p-3 col-8 tasks">
+    <div class="p-3 col-8">
       <h2 class="heading mb-3">
         Tasks
       </h2>
-      <div class="bg-white p-1 pl-3 rounded">
-        Hello this is your first task
+      <div
+        class="bg-white p-1 pl-3 mt-2 border rounded"
+        *ngFor="let item of tasks"
+      >
+        {{ item.title }}
       </div>
+      <button class="add-button">+</button>
     </div>
   </div>
 </div>
