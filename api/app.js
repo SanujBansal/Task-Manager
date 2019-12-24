@@ -1,17 +1,25 @@
-const express = require("express");
-const app = express();
-const mongoose = require("./db/mongoose");
-const bodyParser = require("body-parser");
-const { list, task } = require("./db/models");
+const express = require('express');
+const mongoose = require('./db/mongoose');
+const bodyParser = require('body-parser');
+const { list, task } = require('./db/models');
 
+const app = express();
 app.use(bodyParser.json());
-app.get("/lists", (req, res) => {
-  //todo return all the lists in the database
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
+app.get('/lists', (req, res) => {
   list.find({}).then(lists => {
     res.send(lists);
   });
 });
-app.post("/lists", (req, res) => {
+app.post('/lists', (req, res) => {
   //todo create a new list and return a new list doc which includes the id
   let title = req.body.title;
   let newList = new list({
@@ -21,7 +29,7 @@ app.post("/lists", (req, res) => {
     res.send(listDoc);
   });
 });
-app.patch("/lists/:id", (req, res) => {
+app.patch('/lists/:id', (req, res) => {
   //todo create a new list and return a new list doc which includes the id
   list
     .findOneAndUpdate(
@@ -34,19 +42,19 @@ app.patch("/lists/:id", (req, res) => {
       res.sendStatus(200);
     });
 });
-app.delete("/lists/:id", (req, res) => {
+app.delete('/lists/:id', (req, res) => {
   list.findOneAndDelete({ _id: req.params.id }).then(deletedDoc => {
     res.send(deletedDoc);
   });
 });
 
-app.get("/lists/:listId/tasks", (req, res) => {
+app.get('/lists/:listId/tasks', (req, res) => {
   task.find({ _listId: req.params.listId }).then(tasks => {
     res.send(tasks);
   });
 });
 
-app.post("/lists/:listId/tasks", (req, res) => {
+app.post('/lists/:listId/tasks', (req, res) => {
   let newtask = new task({
     title: req.body.title,
     _listId: req.params.listId
@@ -56,7 +64,7 @@ app.post("/lists/:listId/tasks", (req, res) => {
   });
 });
 
-app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
+app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
   task
     .findOneAndUpdate(
       {
@@ -72,7 +80,7 @@ app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
     });
 });
 
-app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
+app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
   task
     .findOneAndDelete({
       _listId: req.params.listId,
@@ -84,5 +92,5 @@ app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("app is running on port 3000");
+  console.log('app is running on port 3000');
 });

@@ -1,0 +1,21 @@
+<div class="centered-content">
+  <div class="modal-box">
+    <h2 class="heading">Create a new List</h2>
+    <div class="form-group">
+      <input
+        #listInput
+        class="form-control my-3"
+        type="text"
+        placeholder="Enter name for list"
+      />
+      <div class="d-flex justify-content-end">
+        <button class="btn border mr-1" routerLink="../">
+          Cancel
+        </button>
+        <button class="btn-primary btn" (click)="createList(listInput.value)">
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
