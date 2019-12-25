@@ -7,6 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Methods', 'PATCH, GET, POST, DELETE, PUT');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
@@ -25,11 +26,14 @@ app.post('/lists', (req, res) => {
   let newList = new list({
     title
   });
-  newList.save().then(listDoc => {
-    res.send(listDoc);
-  }).catch((err) => {
-    console.log(err);
-  });
+  newList
+    .save()
+    .then(listDoc => {
+      res.send(listDoc);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 app.patch('/lists/:id', (req, res) => {
   //todo create a new list and return a new list doc which includes the id
@@ -61,11 +65,14 @@ app.post('/lists/:listId/tasks', (req, res) => {
     title: req.body.title,
     _listId: req.params.listId
   });
-  newtask.save().then(task => {
-    res.send(task);
-  }).catch((e)=> {
-    console.log(err);
-  });
+  newtask
+    .save()
+    .then(task => {
+      res.send(task);
+    })
+    .catch(e => {
+      console.log(err);
+    });
 });
 
 app.patch('/lists/:listId/tasks/:taskId', (req, res) => {

@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'new-list',
     component: NewListComponent
+  },
+  {
+    path: 'lists/:listId/new-task',
+    component: NewListComponent
   }
 ];
 

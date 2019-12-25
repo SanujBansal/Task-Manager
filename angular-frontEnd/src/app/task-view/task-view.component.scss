@@ -11,3 +11,19 @@
   width: 50px;
   font-size: 26px;
 }
+.tasks {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  &:active {
+    transform: scale(0.95);
+  }
+  &:hover {
+    box-shadow: 0 0 0 5px #eeeeee;
+  }
+  &.complete {
+    text-decoration: line-through;
+  }
+}
+.height-70 {
+  height: 70%;
+}

@@ -11,16 +11,16 @@ import { HttpParams } from '@angular/common/http';
 })
 export class TaskViewComponent implements OnInit {
   lists;
-  tasks: Task[] = [
-    { title: "Select A List To Display It's tasks", listId: '', _id: '' }
-  ];
+  tasks: Task[];
   constructor(
     private webRequest: WebRequestService,
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.getTasks(params.listId);
+      if (params.listId) {
+        this.getTasks(params.listId);
+      }
     });
     this.webRequest.get('lists').subscribe(res => {
       this.lists = res;
@@ -30,9 +30,14 @@ export class TaskViewComponent implements OnInit {
     this.webRequest.get(`lists/${id}/tasks`).subscribe(tasks => {
       const res: any = tasks;
       this.tasks = res;
-      if (this.tasks.length === 0) {
-        this.tasks = [new Task('This List has no tasks')];
-      }
     });
+  }
+  changeCompletionStatus(task) {
+    task.completed = !task.completed;
+    this.webRequest
+      .patch(`lists/${task._listId}/tasks/${task._id}`, task)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 }
