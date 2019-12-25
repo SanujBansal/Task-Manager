@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('./db/mongoose');
 const bodyParser = require('body-parser');
-const { list, task } = require('./db/models');
+const { list, task, User } = require('./db/models');
 
 const app = express();
 app.use(bodyParser.json());
@@ -102,6 +102,54 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
     });
 });
 
+app.post('/users', (req, res) => {
+  let body = req.body;
+  let newUser = new User(body);
+
+  newUser
+    .save()
+    .then(() => {
+      return newUser.createSession();
+    })
+    .then(refreshToken => {
+      return newUser.generateAccessAuthToken().then(accessToken => {
+        return { accessToken, refreshToken };
+      });
+    })
+    .then(authToken => {
+      res
+        .header('x-refresh-token', authToken.refreshToken)
+        .header('x-access-token', authToken.accessToken)
+        .send(newUser);
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
+});
+app.post('/users/login', (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
+
+  User.findByCredentials(email, password)
+    .then(user => {
+      return user
+        .createSession()
+        .then(refreshToken => {
+          return user.generateAccessAuthToken().then(accessToken => {
+            return { accessToken, refreshToken };
+          });
+        })
+        .then(authToken => {
+          res
+            .header('x-refresh-token', authToken.refreshToken)
+            .header('x-access-token', authToken.accessToken)
+            .send(user);
+        });
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
+});
 app.listen(3000, () => {
   console.log('app is running on port 3000');
 });
