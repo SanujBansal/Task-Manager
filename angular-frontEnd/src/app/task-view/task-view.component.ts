@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WebRequestService } from '../web-request.service';
 import { Task } from '../models/task.model';
 import { ActivatedRoute } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-task-view',
@@ -19,7 +20,7 @@ export class TaskViewComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.getTasks(params.id);
+      this.getTasks(params.listId);
     });
     this.webRequest.get('lists').subscribe(res => {
       this.lists = res;

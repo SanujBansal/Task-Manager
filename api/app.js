@@ -27,6 +27,8 @@ app.post('/lists', (req, res) => {
   });
   newList.save().then(listDoc => {
     res.send(listDoc);
+  }).catch((err) => {
+    console.log(err);
   });
 });
 app.patch('/lists/:id', (req, res) => {
@@ -61,6 +63,8 @@ app.post('/lists/:listId/tasks', (req, res) => {
   });
   newtask.save().then(task => {
     res.send(task);
+  }).catch((e)=> {
+    console.log(err);
   });
 });
 
