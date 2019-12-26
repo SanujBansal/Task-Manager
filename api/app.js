@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('./db/mongoose');
 const bodyParser = require('body-parser');
 const { list, task, User } = require('./db/models');
-
 const app = express();
+
+/* middlewares */
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
@@ -15,6 +16,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+// api's
 app.get('/lists', (req, res) => {
   list.find({}).then(lists => {
     res.send(lists);
@@ -145,6 +147,51 @@ app.post('/users/login', (req, res) => {
             .header('x-access-token', authToken.accessToken)
             .send(user);
         });
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
+});
+let verifySession = (req, res, next) => {
+  let refreshToken = req.header('x-refresh-token');
+  let _id = req.header('_id');
+  User.findByIdandToken(_id, refreshToken)
+    .then(user => {
+      if (!user) {
+        return Promise.reject({
+          error:
+            'User not found. Make sure that the refresh token and user id are correct'
+        });
+      }
+      req.user_id = user.id;
+      req.refreshToken = refreshToken;
+      req.userObject = user;
+      let isSessionValid = false;
+      user.sessions.forEach(session => {
+        if (session.token === refreshToken) {
+          console.log(session);
+          if (User.hasRefreshTokenExpired(session.expiresAt) === false) {
+            isSessionValid = true;
+          }
+        }
+      });
+      if (isSessionValid) {
+        next();
+      } else {
+        return Promise.reject({
+          error: 'Refresh token has expired or the sessin is invalid'
+        });
+      }
+    })
+    .catch(e => {
+      res.status(401).send(e);
+    });
+};
+app.get('/users/me/access-token', verifySession, (req, res) => {
+  req.userObject
+    .generateAccessAuthToken()
+    .then(accessToken => {
+      res.header('x-access-token', accessToken).send({ accessToken });
     })
     .catch(e => {
       res.status(400).send(e);

@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
       },
-      expireAt: {
+      expiresAt: {
         type: Number,
         required: true
       }
@@ -86,7 +86,7 @@ userSchema.methods.createSession = function() {
 // Model Methods --> Statics
 userSchema.statics.findByIdandToken = function(_id, token) {
   const user = this;
-  return user.findOne({ _id, 'session.token': token });
+  return user.findOne({ _id, 'sessions.token': token });
 };
 userSchema.statics.findByCredentials = (email, password) => {
   let uuser = this;
@@ -133,8 +133,8 @@ userSchema.pre('save', function(next) {
 //Helper Methods
 let saveSessionToDatabase = (user, refreshToken) => {
   return new Promise((resolve, reject) => {
-    let expireAt = generateRefreshTokenExpireTime();
-    user.sessions.push({ token: refreshToken, expireAt });
+    let expiresAt = generateRefreshTokenExpireTime();
+    user.sessions.push({ token: refreshToken, expiresAt });
     user
       .save()
       .then(() => {
