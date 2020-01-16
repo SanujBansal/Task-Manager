@@ -3,6 +3,7 @@ import { WebRequestService } from '../web-request.service';
 import { Task } from '../models/task.model';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
+import { List } from '../models/list.model';
 
 @Component({
   selector: 'app-task-view',
@@ -10,7 +11,7 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./task-view.component.scss']
 })
 export class TaskViewComponent implements OnInit {
-  lists;
+  lists: List[];
   tasks: Task[];
   constructor(
     private webRequest: WebRequestService,
@@ -20,9 +21,11 @@ export class TaskViewComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params.listId) {
         this.getTasks(params.listId);
+      } else {
+        this.tasks = undefined;
       }
     });
-    this.webRequest.get('lists').subscribe(res => {
+    this.webRequest.get('lists').subscribe((res: List[]) => {
       this.lists = res;
     });
   }
