@@ -44,7 +44,7 @@ userSchema.methods.generateAccessAuthToken = function() {
     jwt.sign(
       { _id: user._id.toHexString() },
       jwtSecret,
-      { expiresIn: '15m' },
+      { expiresIn: '10s' },
       (err, token) => {
         if (!err) {
           resolve(token);
@@ -84,6 +84,10 @@ userSchema.methods.createSession = function() {
 };
 
 // Model Methods --> Statics
+
+userSchema.statics.getJWTSecret = () => {
+  return jwtSecret;
+};
 userSchema.statics.findByIdandToken = function(_id, token) {
   const user = this;
   return user.findOne({ _id, 'sessions.token': token });
