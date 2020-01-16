@@ -27,4 +27,13 @@ export class WebRequestService {
       }
     );
   }
+  signUp(email, password) {
+    return this.http.post(
+      `${this.ROOT_URL}/users`,
+      { email, password },
+      {
+        observe: 'response'
+      }
+    );
+  }
 }

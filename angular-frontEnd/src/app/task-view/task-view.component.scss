@@ -27,3 +27,9 @@
 .height-70 {
   height: 70%;
 }
+.fa {
+  &:hover {
+    cursor: pointer;
+  }
+  font-size: 20px;
+}

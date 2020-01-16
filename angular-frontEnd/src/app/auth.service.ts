@@ -24,6 +24,19 @@ export class AuthService {
       })
     );
   }
+  signUp(email, password) {
+    return this.webRequest.signUp(email, password).pipe(
+      shareReplay(),
+      tap((res: HttpResponse<any>) => {
+        this.setSession(
+          res.body._id,
+          res.headers.get('x-access-token'),
+          res.headers.get('x-refresh-token')
+        );
+        console.log("Successfully signedup and now logged in!");
+      })
+    );
+  }
   getAccessToken() {
     return localStorage.getItem('x-access-token');
   }
