@@ -70,4 +70,12 @@ export class TaskViewComponent implements OnInit {
   editTask(taskId) {
     this.router.navigate([`edit/task/${taskId}`], { relativeTo: this.route });
   }
+  moveToNewTask() {
+    let listId;
+    this.route.params.subscribe(params => (listId = params.listId));
+    console.log(listId);
+    if (listId) {
+      this.router.navigate(['new-task'], { relativeTo: this.route });
+    }
+  }
 }
