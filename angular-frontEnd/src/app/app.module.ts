@@ -9,6 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { WebRequestInterceptor } from './web-request-interceptor.service';
 import { SignupComponent } from './pages/signup/signup.component';
+import { EditListComponent } from './pages/edit-list/edit-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SignupComponent } from './pages/signup/signup.component';
     TaskViewComponent,
     NewListComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    EditListComponent
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [

@@ -1,0 +1,21 @@
+<div class="centered-content">
+  <div class="modal-box">
+    <h2 class="heading">Edit {{ selection }}</h2>
+    <div class="form-group">
+      <input
+        #Input
+        class="form-control my-3"
+        type="text"
+        placeholder="Enter name for {{ selection }}"
+      />
+      <div class="d-flex justify-content-end">
+        <button class="btn border mr-1" routerLink="/lists">
+          Cancel
+        </button>
+        <button class="btn-primary btn" (click)="edit(Input.value)">
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

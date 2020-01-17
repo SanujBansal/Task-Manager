@@ -4,6 +4,7 @@ import { TaskViewComponent } from './task-view/task-view.component';
 import { NewListComponent } from './pages/new-list/new-list.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { EditListComponent } from './pages/edit-list/edit-list.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,16 @@ const routes: Routes = [
   },
   {
     path: 'lists/:listId',
-    component: TaskViewComponent
+    component: TaskViewComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'lists/:listId/edit',
+    component: EditListComponent
+  },
+  {
+    path: 'lists/:listId/edit/task/:taskId',
+    component: EditListComponent
   },
   {
     path: 'lists',
@@ -33,7 +43,7 @@ const routes: Routes = [
   },
   {
     path: 'signup',
-    component: SignupComponent
+    component: LoginComponent
   }
 ];
 
