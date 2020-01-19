@@ -1,10 +1,28 @@
 <div class="centered-content">
-  <div class="d-flex bg-light h-50 w-50 rounded">
+  <div class="d-flex bg-light height-70 col-6 rounded">
     <div class="p-3 col-4 d-flex flex-column">
-      <h2 class="heading">
-        Lists
-      </h2>
-      <div class="pt-2 list-group">
+      <div class="d-flex justify-content-between">
+        <h2 class="heading">
+          Lists
+        </h2>
+        <div class="dropdown">
+          <i
+            class="fa fa-gear pr-4"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            id="dropdownMenuButton"
+          ></i>
+          <div
+            class="dropdown-menu rounded"
+            aria-labelledby="dropdownMenuButton"
+          >
+            <div class="dropdown-item" (click)="editList()">Edit List</div>
+            <div class="dropdown-item" (click)="deleteList()">Delete List</div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-2 list-group overflow-auto mb-3">
         <div
           class="list-group-item"
           *ngFor="let item of lists"
@@ -20,17 +38,27 @@
       </button>
     </div>
 
-    <div class="p-3 col-8">
-      <h2 class="heading mb-3">
+    <div class="p-3 col-8 d-flex flex-column">
+      <h2 class="heading">
         Tasks
       </h2>
-      <div
-        class="bg-white p-1 pl-3 mt-2 border rounded"
-        *ngFor="let item of tasks"
-      >
-        {{ item.title }}
+      <div class="mb-3 p-2 pb-5">
+        <div
+          class="bg-white p-1 pl-3 border rounded tasks mb-2"
+          *ngFor="let item of tasks"
+          [class.complete]="item.completed"
+          (click)="changeCompletionStatus(item)"
+        >
+          <div class="col-9 title overflow-auto">
+            {{ item.title }}
+          </div>
+          <div class="col-2 d-flex task-buttons">
+            <i class="fa fa-edit pr-2" (click)="editTask(item._id)"></i>
+            <i class="fa fa-trash pr-2" (click)="deleteTask(item._id)"></i>
+          </div>
+        </div>
       </div>
-      <button class="add-button">+</button>
+      <button class="add-button" (click)="moveToNewTask()">+</button>
     </div>
   </div>
 </div>

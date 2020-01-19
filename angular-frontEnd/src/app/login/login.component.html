@@ -1,0 +1,33 @@
+<div class="centered-content">
+  <div class="modal-box">
+    <h2 class="heading">{{ action }}</h2>
+    <div class="form-group">
+      <input
+        #username
+        class="form-control my-3"
+        type="text"
+        placeholder="UserName"
+      />
+      <input
+        #password
+        class="form-control my-3"
+        type="text"
+        placeholder="Password"
+      />
+      <div class="d-flex justify-content-end">
+        <button
+          class="btn-primary btn"
+          (click)="login(username.value, password.value)"
+        >
+          {{ action }}
+        </button>
+      </div>
+      <div *ngIf="action === 'Login'">
+        New Here? Click <a href="signup">here</a> to create Account
+      </div>
+      <div *ngIf="action !== 'Login'">
+        Already have account? Click <a href="login">here</a> to login
+      </div>
+    </div>
+  </div>
+</div>

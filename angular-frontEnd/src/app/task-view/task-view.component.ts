@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { WebRequestService } from '../web-request.service';
 import { Task } from '../models/task.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { List } from '../models/list.model';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-task-view',
@@ -9,19 +11,42 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./task-view.component.scss']
 })
 export class TaskViewComponent implements OnInit {
-  lists;
-  tasks: Task[] = [
-    { title: "Select A List To Display It's tasks", listId: '', _id: '' }
-  ];
+  lists: List[];
+  tasks: Task[];
   constructor(
     private webRequest: WebRequestService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
+  deleteList() {
+    let listId;
+    this.route.params.subscribe(params => {
+      listId = params.listId;
+    });
+    this.webRequest.delete(`lists/${listId}`).subscribe(res => {
+      this.router.navigate(['/lists']);
+    });
+  }
+  deleteTask(taskId) {
+    let listId;
+    this.route.params.subscribe(params => {
+      listId = params.listId;
+    });
+    this.webRequest.delete(`lists/${listId}/tasks/${taskId}`).subscribe(res => {
+      console.log(res);
+      this.tasks = this.tasks.filter(task => task._id !== taskId);
+    });
+  }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.getTasks(params.id);
+      if (params.listId) {
+        this.getTasks(params.listId);
+      } else {
+        this.tasks = undefined;
+      }
     });
-    this.webRequest.get('lists').subscribe(res => {
+    this.webRequest.get('lists').subscribe((res: List[]) => {
       this.lists = res;
     });
   }
@@ -29,9 +54,28 @@ export class TaskViewComponent implements OnInit {
     this.webRequest.get(`lists/${id}/tasks`).subscribe(tasks => {
       const res: any = tasks;
       this.tasks = res;
-      if (this.tasks.length === 0) {
-        this.tasks = [new Task('This List has no tasks')];
-      }
     });
+  }
+  changeCompletionStatus(task) {
+    task.completed = !task.completed;
+    this.webRequest
+      .patch(`lists/${task._listId}/tasks/${task._id}`, task)
+      .subscribe(res => {});
+  }
+
+  editList() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+    // this.router.navigate([`${this.route}/edit`]);
+  }
+  editTask(taskId) {
+    this.router.navigate([`edit/task/${taskId}`], { relativeTo: this.route });
+  }
+  moveToNewTask() {
+    let listId;
+    this.route.params.subscribe(params => (listId = params.listId));
+    console.log(listId);
+    if (listId) {
+      this.router.navigate(['new-task'], { relativeTo: this.route });
+    }
   }
 }
