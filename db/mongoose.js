@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/TaskManager";
 mongoose
-  .connect("mongodb://localhost:27017/TaskManager", {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true

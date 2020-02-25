@@ -31,6 +31,9 @@
   }
   overflow: auto;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .task-buttons {
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;

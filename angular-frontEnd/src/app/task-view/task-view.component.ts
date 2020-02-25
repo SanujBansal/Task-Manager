@@ -4,6 +4,7 @@ import { Task } from '../models/task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { List } from '../models/list.model';
 import { Route } from '@angular/compiler/src/core';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-task-view',
@@ -16,7 +17,8 @@ export class TaskViewComponent implements OnInit {
   constructor(
     private webRequest: WebRequestService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
   deleteList() {
     let listId;
@@ -26,6 +28,9 @@ export class TaskViewComponent implements OnInit {
     this.webRequest.delete(`lists/${listId}`).subscribe(res => {
       this.router.navigate(['/lists']);
     });
+  }
+  logout() {
+    this.auth.logout();
   }
   deleteTask(taskId) {
     let listId;

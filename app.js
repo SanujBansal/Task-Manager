@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('./db/mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 const { list, task, User } = require('./db/models');
 const app = express();
 const jwt = require('jsonwebtoken');
@@ -286,6 +287,11 @@ let deleteTasksFromList = _listId => {
       console.log('tasks of list deleted');
     });
 };
-app.listen(3000, () => {
-  console.log('app is running on port 3000');
+app.use(express.static(__dirname + '/angular-frontEnd/dist/taskManager'))
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname + '/angular-frontEnd/dist/taskManager/index.html')); // Set index.html as layout
+});
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log('app is running on port '+PORT);
 });
